@@ -1,12 +1,41 @@
-from Crypto.Cipher import AES, Blowfish
+"""
+Quick documentation
+AES -   XOR on each state byte and round key byte
+        for each round (defined by key)
+            change each bate with another from lookup table
+            shift rows by it's number
+            multiply each column linearly
+        repeat all till last round
+        do steps "for each round" without multiplication
+
+Blowfish -  Algorithm splits the 32-bit input into four eight-bit quarters, and uses the quarters as input to the S-boxes
+            The S-boxes accept 8-bit input and produce 32-bit output
+            The outputs are added modulo 2^32 and XORed to produce the final 32-bit output
+
+DES -   First text is separated in 64 bit block (for making it easier for machines to encript it)
+        Algorithm with 16 cycles works on two 32 bit sized sides of block and does the Feistel's functions on them,
+        then two parts are combined in 64 bit block
+        Lastly makes final permutation
+
+"""
+
+__author__ = "Kamil Skrzypkowski, Andrzej Mrozik"
+
+from Crypto.Cipher import AES, Blowfish, DES
 from struct import pack
-from des import DesKey
+# from des import DesKey
 
 # pip install pycryptodome
 # pip install des
 
 
 def AES_encode(key, message):
+    '''
+    Encryptor function for AES encryption \n
+    INPUT - privet key, message to encrypt \n
+    RETURN - encrypted message
+    '''
+
     cipher = AES.new(key, AES.MODE_EAX)
 
     nonce = cipher.nonce
@@ -21,6 +50,12 @@ def AES_encode(key, message):
 
 
 def AES_decode(key, nonce, ciphertext):
+    '''
+    Decrypting function for AES encryption \n
+    INPUT - privet key, encrypted message \n
+    RETURN - decrypted message
+    '''
+
     cipher = AES.new(key, AES.MODE_EAX, nonce=nonce)
     plaintext = cipher.decrypt(ciphertext)
 
@@ -28,6 +63,12 @@ def AES_decode(key, nonce, ciphertext):
 
 
 def Bf_encode(key, message):
+    '''
+    Encryptor function for Blowfish encryption \n
+    INPUT - privet key, message to encrypt \n
+    RETURN - encrypted message
+    '''
+
     bs = Blowfish.block_size
     cipher = Blowfish.new(key, Blowfish.MODE_CBC)
     plen = bs - len(message) % bs
@@ -38,6 +79,12 @@ def Bf_encode(key, message):
 
 
 def Bf_decode(key, ciphertext):
+    '''
+    Decrypting function for Blowfish encryption \n
+    INPUT - privet key, encrypted message \n
+    RETURN - decrypted message
+    '''
+
     bs = Blowfish.block_size
     iv = ciphertext[:bs]
     ciphertext = ciphertext[bs:]
@@ -51,14 +98,34 @@ def Bf_decode(key, ciphertext):
 
 
 def DES_encode(key, message):
-    key0 = DesKey(key)
-    ciphertext = key0.encrypt(message, padding=True)
+    '''
+    Encryptor function for DES encryption \n
+    INPUT - privet key, message to encrypt \n
+    RETURN - encrypted message
+    '''
+
+    # OLD
+    # key0 = DesKey(key)
+    # ciphertext = key0.encrypt(message, padding=True)
+
+    cipher = DES.new(key, DES.MODE_OFB)
+    ciphertext = cipher.iv + cipher.encrypt(message)
     return ciphertext
 
 
 def DES_decode(key, ciphertext):
-    key0 = DesKey(key)
-    msg = key0.decrypt(ciphertext, padding=True)
+    '''
+    Decrypting function for DES encryption \n
+    INPUT - privet key, encrypted message \n
+    RETURN - decrypted message
+    '''
+
+    # OLD
+    # key0 = DesKey(key)
+    # msg = key0.decrypt(ciphertext, padding=True)
+
+    cipher = DES.new(key, DES.MODE_OFB)
+    msg = cipher.iv + cipher.decrypt(ciphertext)
     return msg
 
 
@@ -78,7 +145,6 @@ if __name__ == '__main__':
     #
     # print(encrypted_text)
     # print(des.decrypt(encrypted_text))
-
 
     key = b'klucz123'
     message = b'BSI to fajny przedmiot'
@@ -103,11 +169,11 @@ if __name__ == '__main__':
     print(message)
 
 #     TODO:
-#         try again to use DES from pycryptodome module
+#        - try again to use DES from pycryptodome module
 #         CLI
 #         handle exceptions about key length basically everywhere
-#         documentation
+#        + documentation
 #         make it OO, SOLID and DRY
-#         header with authors and quick documentation of algorithms
-#         sources of cipher modules
+#        + header with authors and quick documentation of algorithms
+#         sources of cipher modules (a czy my tego nie mamy?)
 
