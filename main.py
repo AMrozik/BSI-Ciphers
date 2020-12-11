@@ -16,7 +16,6 @@ DES -   First text is separated in 64 bit block (for making it easier for machin
         Algorithm with 16 cycles works on two 32 bit sized sides of block and does the Feistel's functions on them,
         then two parts are combined in 64 bit block
         Lastly makes final permutation
-
 """
 
 __author__ = "Kamil Skrzypkowski, Andrzej Mrozik"
@@ -30,11 +29,11 @@ from struct import pack
 
 
 def AES_encode(key, message):
-    '''
-    Encryptor function for AES encryption \n
-    INPUT - privet key, message to encrypt \n
+    """
+    Encrypting function for AES algorithm \n
+    INPUT - key, message to encrypt \n
     RETURN - encrypted message
-    '''
+    """
 
     cipher = AES.new(key, AES.MODE_EAX)
 
@@ -50,11 +49,11 @@ def AES_encode(key, message):
 
 
 def AES_decode(key, nonce, ciphertext):
-    '''
-    Decrypting function for AES encryption \n
-    INPUT - privet key, encrypted message \n
+    """
+    Decrypting function for AES algorithm \n
+    INPUT - key, encrypted message \n
     RETURN - decrypted message
-    '''
+    """
 
     cipher = AES.new(key, AES.MODE_EAX, nonce=nonce)
     plaintext = cipher.decrypt(ciphertext)
@@ -63,11 +62,11 @@ def AES_decode(key, nonce, ciphertext):
 
 
 def Bf_encode(key, message):
-    '''
-    Encryptor function for Blowfish encryption \n
-    INPUT - privet key, message to encrypt \n
+    """
+    Encrypting function for Blowfish algorithm \n
+    INPUT - key, message to encrypt \n
     RETURN - encrypted message
-    '''
+    """
 
     bs = Blowfish.block_size
     cipher = Blowfish.new(key, Blowfish.MODE_CBC)
@@ -79,11 +78,11 @@ def Bf_encode(key, message):
 
 
 def Bf_decode(key, ciphertext):
-    '''
-    Decrypting function for Blowfish encryption \n
-    INPUT - privet key, encrypted message \n
+    """
+    Decrypting function for Blowfish algorithm \n
+    INPUT - key, encrypted message \n
     RETURN - decrypted message
-    '''
+    """
 
     bs = Blowfish.block_size
     iv = ciphertext[:bs]
@@ -98,11 +97,11 @@ def Bf_decode(key, ciphertext):
 
 
 def DES_encode(key, message):
-    '''
-    Encryptor function for DES encryption \n
-    INPUT - privet key, message to encrypt \n
+    """
+    Encrypting function for DES algorithm \n
+    INPUT -  key, message to encrypt \n
     RETURN - encrypted message
-    '''
+    """
 
     # OLD
     # key0 = DesKey(key)
@@ -114,11 +113,11 @@ def DES_encode(key, message):
 
 
 def DES_decode(key, ciphertext):
-    '''
-    Decrypting function for DES encryption \n
-    INPUT - privet key, encrypted message \n
+    """
+    Decrypting function for DES algorithm \n
+    INPUT - key, encrypted message \n
     RETURN - decrypted message
-    '''
+    """
 
     # OLD
     # key0 = DesKey(key)
