@@ -197,25 +197,15 @@ if __name__ == '__main__':
             "0.Exit")
         console_in = input(">")
 
-        # TODO popwiedz czy chcemy tak, czy chcemy tylko inty
         if console_in == "1" or console_in == "DES" or console_in == "des":
 
-            # TODO: copy this input, option and if for each crypto algorithm
-            print("Chcesz kodowac czy dekodowac?")
-            option = input(">")
-
             # DES
-            if option == "kodowac"  or option == "k":
-                key, message = ask_for_data()
-                print(message_back_to_string(message))
-                szyfr_des = DES_encode(key, message)
-                print(szyfr_des)
-            elif option == "dokodowac" or option == "d":
-                key, message = ask_for_data()
-                print(message)
-                message = DES_decode(key, message)
-                print(message_back_to_string(message))
-
+            key, message = ask_for_data()
+            szyfr_des = DES_encode(key, message)
+            print("Zaszyfrowana wiadomosc: ")
+            print(szyfr_des)
+            message = DES_decode(key, szyfr_des)
+            print("Odszyfrowana wiadomosc: " + message_back_to_string(message))
             print()
 
         elif console_in == "2" or console_in == "BlowFish" or console_in == "Blowfish" or console_in == "blowfish":
@@ -223,11 +213,10 @@ if __name__ == '__main__':
 
             # BlowFish
             szyfr_bf = Bf_encode(key, message)
+            print("Zaszyfrowana wiadomosc: ")
             print(szyfr_bf)
             message = Bf_decode(key, szyfr_bf)
-
-            message = message_back_to_string(message)
-            print(message)
+            print("Odszyfrowana wiadomosc: " + message_back_to_string(message))
             print()
 
         elif console_in == "3" or console_in == "AES" or console_in == "aes":
@@ -235,11 +224,10 @@ if __name__ == '__main__':
 
             # AES
             nonce, szyfr_aes = AES_encode(key, message)
+            print("Zaszyfrowana wiadomosc: ")
             print(szyfr_aes)
             message = AES_decode(key, nonce, szyfr_aes)
-
-            message = message_back_to_string(message)
-            print(message)
+            print("Odszyfrowana wiadomosc: " + message_back_to_string(message))
             print()
 
         elif console_in == "0" or console_in == "Exit" or console_in == "exit" or console_in == "EXIT" or console_in == "e":
