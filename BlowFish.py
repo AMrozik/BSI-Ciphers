@@ -1,4 +1,6 @@
-from Crypto.Cipher import AES, Blowfish
+__author__ = "Kamil Skrzypkowski, Andrzej Mrozik"
+
+from Crypto.Cipher import Blowfish
 from struct import pack
 
 

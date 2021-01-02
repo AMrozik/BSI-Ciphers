@@ -1,5 +1,6 @@
-from Crypto.Cipher import AES, Blowfish
-from des import DesKey
+__author__ = "Kamil Skrzypkowski, Andrzej Mrozik"
+
+from Crypto.Cipher import AES
 
 
 def AES_encode(key, message):
