@@ -1,3 +1,5 @@
+__author__ = "Kamil Skrzypkowski, Andrzej Mrozik"
+
 from Crypto.Hash import SHA256
 import hashlib
 

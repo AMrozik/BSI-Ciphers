@@ -17,6 +17,10 @@ DES -   First text is separated in 64 bit block (for making it easier for machin
         then two parts are combined in 64 bit block
         Lastly makes final permutation
 
+RSA -
+
+DSA - Validates hash object with public key and signature (made out of hash object + private key)
+
 
 sources:
 https://pycryptodome.readthedocs.io/en/latest/src/cipher/aes.html
@@ -25,6 +29,7 @@ https://pycryptodome.readthedocs.io/en/latest/src/cipher/blowfish.html
 
 # pip install pycryptodome
 # pip install des
+# pip install rsa
 """
 
 __author__ = "Kamil Skrzypkowski, Andrzej Mrozik"
@@ -32,6 +37,8 @@ __author__ = "Kamil Skrzypkowski, Andrzej Mrozik"
 from AES import *
 from DES import *
 from BlowFish import *
+from RSA import *
+from DSA import *
 
 
 def ask_for_data(key_bit_size=8):
@@ -94,49 +101,100 @@ def message_back_to_string(message):
     return message
 
 
+def ask_for_data_asy():
+    """
+    Functiona that asks for data used by asymetric algorythms
+    INPUTS - none
+    RETURNS - <str> message
+    """
+    print("Tell me you's message")
+    message = input(">")
+    return message
+
+
 if __name__ == '__main__':
 
     while True:
-        print("What cipher function you want to use? \n"
-              "1.DES \n"
-              "2.Blowfish \n"
-              "3.AES \n"
+        print("What type of cipher do you want? \n"
+              "1.Symetric\n"
+              "2.Asymetric \n"
               "0.Exit")
         console_in = input(">")
 
-        if console_in == "1" or console_in == "DES" or console_in == "des":
+        # Symetric
+        if console_in == "1" or console_in == "Symetric" or console_in == "s":
+            print("What cipher function you want to use? \n"
+                  "1.DES \n"
+                  "2.Blowfish \n"
+                  "3.AES \n"
+                  "0.Exit")
+            console_in = input(">")
 
-            # DES
-            key, message = ask_for_data()
-            szyfr_des = DES_encode(key, message)
-            print("Zaszyfrowana wiadomosc: ")
-            print(szyfr_des)
-            message = DES_decode(key, szyfr_des)
-            print("Odszyfrowana wiadomosc: " + message_back_to_string(message))
-            print()
+            if console_in == "1" or console_in == "DES" or console_in == "des":
 
-        elif console_in == "2" or console_in == "BlowFish" or console_in == "Blowfish" or console_in == "blowfish":
+                # DES
+                key, message = ask_for_data()
+                szyfr_des = DES_encode(key, message)
+                print("Zaszyfrowana wiadomosc: ")
+                print(szyfr_des)
+                message = DES_decode(key, szyfr_des)
+                print("Odszyfrowana wiadomosc: " + message_back_to_string(message))
+                print()
 
-            # BlowFish
-            key, message = ask_for_data()
-            szyfr_bf = Bf_encode(key, message)
-            print("Zaszyfrowana wiadomosc: ")
-            print(szyfr_bf)
-            message = Bf_decode(key, szyfr_bf)
-            print("Odszyfrowana wiadomosc: " + message_back_to_string(message))
-            print()
+            elif console_in == "2" or console_in == "BlowFish" or console_in == "Blowfish" or console_in == "blowfish":
 
-        elif console_in == "3" or console_in == "AES" or console_in == "aes":
+                # BlowFish
+                key, message = ask_for_data()
+                szyfr_bf = Bf_encode(key, message)
+                print("Zaszyfrowana wiadomosc: ")
+                print(szyfr_bf)
+                message = Bf_decode(key, szyfr_bf)
+                print("Odszyfrowana wiadomosc: " + message_back_to_string(message))
+                print()
 
-            # AES
-            key, message = ask_for_data(16)
-            nonce, szyfr_aes = AES_encode(key, message)
-            print("Zaszyfrowana wiadomosc: ")
-            print(szyfr_aes)
-            message = AES_decode(key, nonce, szyfr_aes)
-            print("Odszyfrowana wiadomosc: " + message_back_to_string(message))
-            print()
+            elif console_in == "3" or console_in == "AES" or console_in == "aes":
 
+                # AES
+                key, message = ask_for_data(16)
+                nonce, szyfr_aes = AES_encode(key, message)
+                print("Zaszyfrowana wiadomosc: ")
+                print(szyfr_aes)
+                message = AES_decode(key, nonce, szyfr_aes)
+                print("Odszyfrowana wiadomosc: " + message_back_to_string(message))
+                print()
+
+        # Asymetric
+        elif console_in == "2" or console_in == "Asymetric" or console_in == "a":
+            print("What cipher function you want to use? \n"
+                  "1.RSA \n"
+                  "2.DSA")
+            console_in = input(">")
+
+            if console_in == "1" or console_in == "RSA" or console_in == "rsa":
+                print("RSA")
+                rsa = RSA()
+
+                message = ask_for_data_asy()
+
+                encoded = rsa.encrypt(message)
+                print("Message encoded", encoded)
+
+                decoded = rsa.decrypt(encoded)
+                print("Message decoded: ", decoded)
+
+            elif console_in == "2" or console_in == "DSA" or console_in == "dsa":
+                print("DSA")
+                message = ask_for_data_asy()
+
+                dsa = DSA(message)
+
+                signature = dsa.sign()
+                verify(dsa.get_public_key(), dsa.get_hash_object(), signature)
+
+        # Exiting
         elif console_in == "0" or console_in == "Exit" or console_in == "exit" \
                 or console_in == "EXIT" or console_in == "e":
             break
+
+        else:
+            print("Nie ma takiej opcji")

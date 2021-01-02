@@ -1,3 +1,5 @@
+__author__ = "Kamil Skrzypkowski, Andrzej Mrozik"
+
 import rsa
 import CryptoUtils as Cu
 
