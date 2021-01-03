@@ -17,7 +17,26 @@ DES -   First text is separated in 64 bit block (for making it easier for machin
         then two parts are combined in 64 bit block
         Lastly makes final permutation
 
-RSA -
+RSA - The RSA algorithm involves four steps: key generation, key distribution, encryption, and decryption.
+
+    A basic principle behind RSA is the observation that it is practical to find three very large positive integers e, d,
+    and n, such that with modular exponentiation for all integers m (with 0 ≤ m < n):
+
+    (m^e)^d ≡ m*(mod n)
+
+    and that knowing e and n, or even m, it can be extremely difficult to find d. The triple bar (≡) here denotes modular
+    congruence.
+
+    In addition, for some operations it is convenient that the order of the two exponentiations can be changed and that
+    this relation also implies:
+
+    (m^d)^e ≡ m*(mod n)
+
+    RSA involves a public key and a private key. The public key can be known by everyone, and it is used for encrypting messages.
+    The intention is that messages encrypted with the public key can only be decrypted in a reasonable amount of time by using
+    the private key. The public key is represented by the integers n and e; and, the private key, by the integer d (although n
+    is also used during the decryption process, so it might be considered to be a part of the private key, too). m represents the
+    message (previously prepared with a certain technique explained below).
 
 DSA - Validates hash object with public key and signature (made out of hash object + private key)
 
@@ -26,6 +45,7 @@ sources:
 https://pycryptodome.readthedocs.io/en/latest/src/cipher/aes.html
 https://pypi.org/project/des/
 https://pycryptodome.readthedocs.io/en/latest/src/cipher/blowfish.html
+https://stuvel.eu/python-rsa-doc/usage.html
 
 # pip install pycryptodome
 # pip install des
@@ -39,78 +59,8 @@ from DES import *
 from BlowFish import *
 from RSA import *
 from DSA import *
-
-
-def ask_for_data(key_bit_size=8):
-    """
-    Gathers data from user and pass them to factory \n
-    INPUT - <int> (default = 8) encoding function key bit size\n
-    RETURN - <bytearray> key and <bytes> message
-    """
-    while True:
-        print("Tell me the ", key_bit_size, "-bit key")
-        key = str(input(">"))
-        if len(key) < key_bit_size:
-            print("The key is to short")
-            print()
-
-        elif len(key) > key_bit_size:
-            print("The key is too long")
-            print()
-
-        else:
-            break
-
-    while True:
-        print("Tell me your message")
-        message = str(input(">"))
-
-        if len(message) < 1:
-            print("There is no message to encrypt")
-            print()
-        else:
-            break
-
-    key, message = key_n_message_factory(key, message)
-    return key, message
-
-
-def key_n_message_factory(key, message):
-    """
-    Factory that takes key and message and converts them into <byte> and <bytearray> \n
-    INPUTS - <str> key, <str> message
-    RETURNS - <bytearray> key, <bytes> message
-    """
-    key_bytearray = bytearray()
-    key_bytearray.extend(map(ord, key))
-
-    message_bytes = bytes(message, 'utf-8')
-
-    return key_bytearray, message_bytes
-
-
-def message_back_to_string(message):
-    """
-    Factory that converts message back to strings \n
-    INPUTS - <bytes> message
-    RETURNS - <str> message
-    """
-    message = str(message)
-    message = message[2:-1]
-
-    return message
-
-
-def ask_for_data_asy():
-    """
-    Functiona that asks for data used by asymetric algorythms
-    INPUTS - none
-    RETURNS - <str> message
-    """
-    print("Tell me you's message")
-    message = input(">")
-    return message
-
+import time
+from CryptoUtils import *
 
 if __name__ == '__main__':
 
@@ -172,24 +122,48 @@ if __name__ == '__main__':
 
             if console_in == "1" or console_in == "RSA" or console_in == "rsa":
                 print("RSA")
-                rsa = RSA()
+
+                # There are two correspondents, everyone has own tuple (public_key, private_key)
+                Alice = RSA()
+                Bob = RSA()
+
+                # Before any communication they must exchange their public keys
+                temp_key = Alice.get_public_key()
+                Alice.set_public_key(Bob.get_public_key())
+                Bob.set_public_key(temp_key)
+                del temp_key
 
                 message = ask_for_data_asy()
 
-                encoded = rsa.encrypt(message)
-                print("Message encoded", encoded)
+                # Now Alice can send message encrypted by Bob's public key so he can read it
+                # and vice versa
+                encoded = Alice.encrypt(message)
+                print("Message encoded: ", encoded)
 
-                decoded = rsa.decrypt(encoded)
+                decoded = Bob.decrypt(encoded)
                 print("Message decoded: ", decoded)
+
+                start = time.time()
+                dec = Bob.encrypt("Alice have a cat")
+                Alice.decrypt(dec)
+                print("execution time: ", time.time() - start)
+
+                print("Hashed message: ", Hash(message))
+                print("Salted message: ", Salted_Hash(message))
 
             elif console_in == "2" or console_in == "DSA" or console_in == "dsa":
                 print("DSA")
                 message = ask_for_data_asy()
 
+                start = time.time()
                 dsa = DSA(message)
 
                 signature = dsa.sign()
                 verify(dsa.get_public_key(), dsa.get_hash_object(), signature)
+                print("execution time: ", time.time() - start)
+
+                print("Hashed message: ", Hash(message))
+                print("Salted message: ", Salted_Hash(message))
 
         # Exiting
         elif console_in == "0" or console_in == "Exit" or console_in == "exit" \
