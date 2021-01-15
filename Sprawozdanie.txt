@@ -1,0 +1,40 @@
+RSA
+
+message:					time:
+"hello"						0.00180745
+"jak sie masz?"					0.00170779
+"miewam sie dobrze, a co u ciebie?"		0.00169968
+"jest ok, wlasnie koncze zadanie z BSI"		0.00175881
+"testowanko RSA"				0.00174927
+"Czas jest niezalezny od dlugosci tekstu"	0.00168871
+"wiecej informacji znajdziesz w programie"	0.00170063
+"Czemu mowisz o psychopatach?"			0.00173997
+"Why are we still here?"			0.00176191
+"Na potege posepnego czerepu. Mam moc!		0.00171899
+
+Average time -> 0.001733321
+
+
+
+DSA
+
+message:					time:
+"hello"						0.266412
+"jak sie masz?"					0.339549
+"miewam sie dobrze, a co u ciebie?"		0.406176
+"jest ok, wlasnie koncze zadanie z BSI"		0.840814
+"testowanko DSA"				0.443411
+"Czas jest niezalezny od dlugosci tekstu"	0.327646
+"wiecej informacji znajdziesz w programie"	0.143846
+"Czemu mowisz o psychopatach?"			1.397996
+"Why are we still here?"			0.514692
+"Na potege posepnego czerepu. Mam moc!		0.281186
+
+Average time -> 0.496172
+
+
+Na pierwszy rzut oka wydawac sie moze ze RSA jest zdecydowanie lepszy, lecz roznica polega na
+wykorzystaniiu metod szyfracji. RSA zabezpiecza sama wiadomosc, zas DSA zabezpiecza wiadomosc 
+przed nieautoryzowanym przetworzeniem. Zatem RSA jest zdecydowanie lepsze jesli chodzi o 
+przesylanie wiadomosci, z kolei DSA jest lepsze jezeli zajmujemy sie przechowywaniem danych 
+poufnych (takich jak np. haslo).
