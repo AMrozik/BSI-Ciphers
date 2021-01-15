@@ -8,6 +8,8 @@ class RSA:
     def __init__(self):
         """Constructor creates public and private keys"""
         self.public_key, self.private_key = rsa.newkeys(512)
+        print(self.public_key)
+        print(self.private_key)
 
     def encrypt(self, message, key=None):
         """Encodes given message
