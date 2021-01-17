@@ -1,34 +1,30 @@
 import socket
+import sys
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_OAEP
 
 
-# TODO: UI to jest czad
-
+# Create key and public key for client
 key = RSA.generate(1024)
-my_kurwa_key = PKCS1_OAEP.new(key)
+private_key = PKCS1_OAEP.new(key)
 
+# Setting up socket
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client.connect(('0.0.0.0', 8080))
+try:
+    client.connect((sys.argv[1], 8080))
+except IndexError:
+    client.connect(('0.0.0.0', 8080))
 
+# Handshaking
 client.send(key.publickey().exportKey())
-
-server_msg = client.recv(4096)
-
 server_key = RSA.importKey(client.recv(4096))
 server_key = PKCS1_OAEP.new(server_key)
-encrypted_shit = server_key.encrypt("chuj ci w dupe tez".encode())
+print("Handshaking - DONE")
 
-
-msg = client.recv(4096)
-print(msg)
-print(len(msg))
-print(my_kurwa_key.decrypt(msg))
-
-
-client.send(bytes(encrypted_shit))
-
+# Message to send
+print("Type your message")
+msg = input(">")
+msg = server_key.encrypt(msg.encode())
+client.send(bytes(msg))
 
 client.close()
-
-print(server_msg)
