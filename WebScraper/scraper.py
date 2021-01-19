@@ -3,7 +3,9 @@ A very, very, very simple webscraper.
 It "googles" a given phrase and prints a list of 10 first results
 
 sources:
-https://docs.python.org/3/library/socket.html
+https://stackoverflow.com/questions/6893968/how-to-get-the-return-value-from-a-thread-in-python
+https://www.crummy.com/software/BeautifulSoup/bs4/doc/
+
 
 # pip install pycryptodome
 """
