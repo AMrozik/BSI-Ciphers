@@ -1,3 +1,16 @@
+"""
+A very, very, very simple webscraper.
+It "googles" a given phrase and prints a list of 10 first results
+
+sources:
+https://docs.python.org/3/library/socket.html
+
+# pip install pycryptodome
+"""
+
+__author__ = "Kamil Skrzypkowski, Andrzej Mrozik"
+
+
 from multiprocessing.pool import ThreadPool
 import pprint
 import requests
