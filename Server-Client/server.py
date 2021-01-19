@@ -61,6 +61,9 @@ def handshaking():
 
 
 def receive_message(size, decryption_key):
+    '''
+    Takes buffer size and key to decrypt received message.
+    '''
     message = connection.recv(size)
     decryption_key.decrypt(message)
     print(message)
