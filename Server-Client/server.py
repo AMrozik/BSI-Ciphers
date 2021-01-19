@@ -1,8 +1,21 @@
+"""Server program to communicate with client over tcp
+When it gets first message from client it starts handshaking process which is bassicaly a public keys exchange,
+so they can proceed to an ecrypted communication
+
+sources:
+https://docs.python.org/3/library/socket.html
+
+# pip install pycryptodome
+"""
+
+__author__ = "Kamil Skrzypkowski, Andrzej Mrozik"
+
 import socket
 import signal
 import os
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_OAEP
+
 
 # https://docs.python.org/3/howto/sockets.html
 
@@ -90,4 +103,3 @@ if __name__ == "__main__":
         # Closing connection
         connection.close()
         print("client disconnected")
-main()

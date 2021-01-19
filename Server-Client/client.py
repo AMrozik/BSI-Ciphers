@@ -1,3 +1,15 @@
+"""Client program to communicate with server over tcp
+It firstly handshakes the server, then sends one encrpted message and closes connection
+
+sources:
+https://docs.python.org/3/library/socket.html
+
+# pip install pycryptodome
+"""
+
+__author__ = "Kamil Skrzypkowski, Andrzej Mrozik"
+
+
 import socket
 import sys
 from Crypto.PublicKey import RSA
