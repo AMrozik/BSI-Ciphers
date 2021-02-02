@@ -96,6 +96,10 @@ def is_vulnerable(response):
 
 
 def scan_sql_injection(url):
+    """
+    Takes url to check it's vulnerability to sql injections.
+    Returns void, prints vulnerabilities to console.
+    """
     # test on URL
     for c in "\"'":
         # add quote/double quote character to the URL
@@ -167,6 +171,9 @@ def scan_xss(url):
 
 
 def check_api(url):
+    """
+    Checks for doable methods on web page.
+    """
     print("API check:")
     verbs = ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'TRACE', 'TEST']
     for verb in verbs:
@@ -178,6 +185,9 @@ def check_api(url):
 
 
 def server_info(url):
+    """
+    Scans header of url and if exists returns data about found values.
+    """
     print("server information:")
     req = requests.get(url)
     headers = ['Server', 'Date', 'Via', 'X-Powered-By', 'X-Country-Code']
@@ -192,6 +202,9 @@ def server_info(url):
 
 
 def header_report():
+    """
+    Checks vulnerabilities from url by looking at server configurations.
+    """
     urls = open("urls.txt", "r")
     for url in urls:
         url = url.strip()
@@ -222,6 +235,9 @@ def header_report():
 
 
 def authentication():
+    """
+    BruteForcing machine that try to log in to admin account.
+    """
     with open('passwords.txt') as passwords:
         for password in passwords.readlines():
             password = password.strip()
